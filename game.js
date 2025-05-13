@@ -240,7 +240,10 @@ function update() {
     // 子弹移动
     for (let i = bullets.length - 1; i >= 0; i--) {
         const bullet = bullets[i];
-        if (!bullet) continue;
+        if (!bullet) {
+            bullets.splice(i, 1);
+            continue;
+        }
         bullet.y -= bullet.speed;
         if (bullet.vx) bullet.x += bullet.vx;
         if (
@@ -254,7 +257,10 @@ function update() {
     // Boss子弹移动
     for (let i = bossBullets.length - 1; i >= 0; i--) {
         const bullet = bossBullets[i];
-        if (!bullet) continue;
+        if (!bullet) {
+            bossBullets.splice(i, 1);
+            continue;
+        }
         bullet.y += bullet.speed;
         if (bullet.vx) bullet.x += bullet.vx;
         if (bullet.y > canvas.height) {
@@ -288,16 +294,15 @@ function update() {
                     bossActive = false;
                     boss = null;
                     if (level === 1) {
-                        score = 500;
+                        score += 500; // 奖励500分，保留当前分数
                         level = 2;
                         bullets.length = 0;
                         bossBullets.length = 0;
                         enemies.length = 0;
-                        // 立即生成新敌人
                         for (let i = 0; i < 5; i++) {
                             spawnEnemy();
                         }
-                        console.log('Transitioned to level 2 with 500 points, enemies:', enemies);
+                        console.log('Transitioned to level 2, score:', score, 'enemies:', enemies);
                     } else {
                         victory = true;
                         console.log('Victory achieved');
